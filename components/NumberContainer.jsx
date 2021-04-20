@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import BodyText from './BodyText';
-import Color from '../constants/colors';
+import Colors from '../constants/colors';
 
 const NumberContainer = ({ style, children }) => {
   return (
@@ -14,7 +14,7 @@ const NumberContainer = ({ style, children }) => {
 const styles = StyleSheet.create({
   container: {
     borderWidth: 2,
-    borderColor: Color.accent,
+    borderColor: Colors.accent,
     alignItems: 'center',
     padding: 10,
     borderRadius: 5,

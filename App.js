@@ -38,8 +38,9 @@ export default function App() {
 
   if (userNumber && numberRounds <= 0) {
     content = <GameScreen userNumber={userNumber} onGameOver={gameOverHandler} />;
-  } else if (numberRounds > 0)
+  } else if (numberRounds > 0) {
     content = <GameOverScreen rounds={numberRounds} userNumber={userNumber} onReset={configureGameHandler} />;
+  }
 
   return (
     <View style={styles.screen}>
