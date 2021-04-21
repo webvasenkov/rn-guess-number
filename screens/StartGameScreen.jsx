@@ -1,6 +1,6 @@
 // @ts-nocheck
-import React, { useState } from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, TouchableWithoutFeedback, Keyboard, Alert, Dimensions, ScrollView } from 'react-native';
 import { Card, Input, NumberContainer, TitleText, BodyText, MainButton } from '../components';
 import Colors from '../constants/colors';
 
@@ -8,6 +8,18 @@ const StartGameScreen = ({ setUserNumberHandler }) => {
   const [enteredValue, setEnteredValue] = useState('');
   const [confirm, setConfirm] = useState(false);
   const [number, setNumber] = useState();
+  const [buttonWidth, setButtonWidth] = useState(Dimensions.get('window').width / 2.9);
+
+  useEffect(() => {
+    const updateLayout = () => {
+      setButtonWidth(Dimensions.get('window').width / 2.9);
+    };
+    Dimensions.addEventListener('change', updateLayout);
+    return () => {
+      Dimensions.addEventListener('change', updateLayout);
+    };
+  });
+
   const numberValueHandler = (value) => setEnteredValue(value.replace(/[^0-9]/g, ''));
   const resetValueHandler = () => {
     setConfirm(false);
@@ -41,38 +53,40 @@ const StartGameScreen = ({ setUserNumberHandler }) => {
   }
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container}>
-        <TitleText>Start a New Game!</TitleText>
-        <Card style={styles.inputContainer}>
-          <BodyText>Select a Number</BodyText>
-          <Input
-            keyboardType='number-pad'
-            maxLength={2}
-            style={styles.input}
-            onChangeText={numberValueHandler}
-            value={enteredValue}
-          />
-          <View style={styles.buttonContainer}>
-            <MainButton
-              title='RESET'
-              color={Colors.accent}
-              onPress={resetValueHandler}
-              size={12}
-              style={[styles.button, styles.buttonReset]}
+    <ScrollView>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.container}>
+          <TitleText>Start a New Game!</TitleText>
+          <Card style={styles.inputContainer}>
+            <BodyText>Select a Number</BodyText>
+            <Input
+              keyboardType='number-pad'
+              maxLength={2}
+              style={styles.input}
+              onChangeText={numberValueHandler}
+              value={enteredValue}
             />
-            <MainButton
-              title='CONFIRM'
-              color={Colors.primary}
-              onPress={confirmNumberHandler}
-              size={12}
-              style={styles.button}
-            />
-          </View>
-        </Card>
-        {outputConfirm}
-      </View>
-    </TouchableWithoutFeedback>
+            <View style={styles.buttonContainer}>
+              <MainButton
+                title='RESET'
+                color={Colors.accent}
+                onPress={resetValueHandler}
+                size={12}
+                style={{ width: buttonWidth }}
+              />
+              <MainButton
+                title='CONFIRM'
+                color={Colors.primary}
+                onPress={confirmNumberHandler}
+                size={12}
+                style={{ width: buttonWidth }}
+              />
+            </View>
+          </Card>
+          {outputConfirm}
+        </View>
+      </TouchableWithoutFeedback>
+    </ScrollView>
   );
 };
 
@@ -83,8 +97,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   inputContainer: {
-    width: 340,
-    maxWidth: '80%',
+    width: '80%',
     marginVertical: 10,
     alignItems: 'center',
   },
@@ -94,13 +107,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   buttonContainer: {
+    width: '100%',
     flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   button: {
-    width: 120,
-  },
-  buttonReset: {
-    marginRight: 5,
+    width: Dimensions.get('window').width / 4,
   },
   summaryContainer: {
     alignItems: 'center',

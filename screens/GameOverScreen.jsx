@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React from 'react';
-import { View, Image, Text, Button, StyleSheet } from 'react-native';
+import { View, Image, Text, StyleSheet, Dimensions } from 'react-native';
 import { TitleText, BodyText, MainButton } from '../components';
 import Shadow from '../constants/shadow';
 import Colors from '../constants/colors';
@@ -26,7 +26,7 @@ const GameOverScreen = ({ rounds, userNumber, onReset }) => {
           fadeDuration={500}
         />
       </View>
-      <MainButton title='Try again' onPress={onReset} />
+      <MainButton title='Try again' onPress={onReset} size={Dimensions.get('window').width > 320 ? 18 : 14} />
     </View>
   );
 };
@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     width: '60%',
   },
   resultText: {
+    fontSize: Dimensions.get('window').width > 320 ? 18 : 14,
     textAlign: 'center',
   },
   highlight: {
@@ -50,11 +51,11 @@ const styles = StyleSheet.create({
     color: Colors.primary,
   },
   imageContainer: {
-    width: 250,
-    height: 250,
-    borderRadius: 250 / 2,
+    width: Dimensions.get('window').width * 0.5,
+    height: Dimensions.get('window').width * 0.5,
+    borderRadius: Dimensions.get('window').width * 0.25,
     overflow: 'hidden',
-    marginVertical: 20,
+    marginVertical: Dimensions.get('window').width > 320 ? 20 : 10,
     ...Shadow,
   },
   image: {
