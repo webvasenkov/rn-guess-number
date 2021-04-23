@@ -1,9 +1,10 @@
 // @ts-nocheck
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Alert, FlatList, StyleSheet } from 'react-native';
+import { View, Alert, FlatList, StyleSheet, Dimensions } from 'react-native';
 import { NumberContainer, Card, MainButton } from '../components';
 import { TitleText, BodyText } from '../components';
 import { Ionicons } from '@expo/vector-icons';
+import { useDeviceSize } from '../hooks/useDeviceSize';
 
 const generateGuess = (min, max, exclude) => {
   min = Math.ceil(min);
@@ -23,6 +24,7 @@ const GameScreen = ({ userNumber, onGameOver }) => {
   const [listGuess, setListGuess] = useState([initialGuess.toString()]);
   const lowerNumber = useRef(1);
   const greaterNumber = useRef(100);
+  const deviceSize = useDeviceSize();
   const nextGuessHandler = (direction) => {
     if (
       (direction === 'lower' && userNumber > currentGuess) ||
@@ -55,6 +57,33 @@ const GameScreen = ({ userNumber, onGameOver }) => {
       </View>
     );
   };
+
+  if (deviceSize.height < 500) {
+    return (
+      <View style={styles.screen}>
+        <TitleText>Opponent's Guess</TitleText>
+        <View style={styles.controls}>
+          <MainButton onPress={() => nextGuessHandler('lower')}>
+            <Ionicons name='remove-outline' size={21} color='#fff' />
+          </MainButton>
+          <NumberContainer style={styles.numberContainer}>{currentGuess}</NumberContainer>
+          <MainButton onPress={() => nextGuessHandler('greater')}>
+            <Ionicons name='add-outline' size={21} color='#fff' />
+          </MainButton>
+        </View>
+        <TitleText style={styles.listTitle}>History</TitleText>
+        <View style={styles.listContainer}>
+          {/* <ScrollView contentContainerStyle={styles.list}>{listGuess.map(renderListGuess)}</ScrollView> */}
+          <FlatList
+            keyExtractor={(item) => item}
+            data={listGuess}
+            renderItem={(item) => renderItemGuess(item, listGuess.length)}
+            contentContainerStyle={styles.list}
+          />
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.screen}>
@@ -97,6 +126,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
+  controls: {
+    width: 300,
+    maxWidth: '80%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+
   listTitle: {
     marginTop: 15,
   },

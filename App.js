@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import * as Font from 'expo-font';
 import AppLoading from 'expo-app-loading';
-
-import { StyleSheet, View } from 'react-native';
-import { Header } from './components';
-import { StartGameScreen, GameScreen, GameOverScreen } from './screens';
+import { StyleSheet, SafeAreaView } from 'react-native';
+import { Header } from './src/components';
+import { StartGameScreen, GameScreen, GameOverScreen } from './src/screens';
 
 const fetchFonts = () => {
   return Font.loadAsync({
-    'montserrat-light': require('./assets/fonts/Montserrat-Light.ttf'),
-    'montserrat-bold': require('./assets/fonts/Montserrat-Bold.ttf'),
+    'montserrat-light': require('./src/assets/fonts/Montserrat-Light.ttf'),
+    'montserrat-bold': require('./src/assets/fonts/Montserrat-Bold.ttf'),
   });
 };
 
@@ -43,10 +42,10 @@ export default function App() {
   }
 
   return (
-    <View style={styles.screen}>
+    <SafeAreaView style={styles.screen}>
       <Header title='Guess a Number' />
       {content}
-    </View>
+    </SafeAreaView>
   );
 }
 

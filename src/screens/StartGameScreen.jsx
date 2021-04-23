@@ -1,6 +1,16 @@
 // @ts-nocheck
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback, Keyboard, Alert, Dimensions, ScrollView } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Alert,
+  Dimensions,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import { Card, Input, NumberContainer, TitleText, BodyText, MainButton } from '../components';
 import Colors from '../constants/colors';
 
@@ -53,48 +63,52 @@ const StartGameScreen = ({ setUserNumberHandler }) => {
   }
 
   return (
-    <ScrollView>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.container}>
-          <TitleText>Start a New Game!</TitleText>
-          <Card style={styles.inputContainer}>
-            <BodyText>Select a Number</BodyText>
-            <Input
-              keyboardType='number-pad'
-              maxLength={2}
-              style={styles.input}
-              onChangeText={numberValueHandler}
-              value={enteredValue}
-            />
-            <View style={styles.buttonContainer}>
-              <MainButton
-                title='RESET'
-                color={Colors.accent}
-                onPress={resetValueHandler}
-                size={12}
-                style={{ width: buttonWidth }}
+    <ScrollView contentContainerStyle={styles.scroll}>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.container}>
+            <TitleText>Start a New Game!</TitleText>
+            <Card style={styles.inputContainer}>
+              <BodyText>Select a Number</BodyText>
+              <Input
+                keyboardType='number-pad'
+                maxLength={2}
+                style={styles.input}
+                onChangeText={numberValueHandler}
+                value={enteredValue}
               />
-              <MainButton
-                title='CONFIRM'
-                color={Colors.primary}
-                onPress={confirmNumberHandler}
-                size={12}
-                style={{ width: buttonWidth }}
-              />
-            </View>
-          </Card>
-          {outputConfirm}
-        </View>
-      </TouchableWithoutFeedback>
+              <View style={styles.buttonContainer}>
+                <MainButton
+                  title='RESET'
+                  color={Colors.accent}
+                  onPress={resetValueHandler}
+                  size={12}
+                  style={{ width: buttonWidth }}
+                />
+                <MainButton
+                  title='CONFIRM'
+                  color={Colors.primary}
+                  onPress={confirmNumberHandler}
+                  size={12}
+                  style={{ width: buttonWidth }}
+                />
+              </View>
+            </Card>
+            {outputConfirm}
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  scroll: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
+  },
+  container: {
+    alignItems: 'center',
   },
   inputContainer: {
     width: '80%',
